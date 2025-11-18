@@ -5,6 +5,9 @@ import { getTodayDateString } from '@/lib/utils/date';
 import Link from 'next/link';
 import Button from '@/components/ui/Button';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 async function getTodaysStory(): Promise<Story | null> {
   try {
     const today = getTodayDateString();
