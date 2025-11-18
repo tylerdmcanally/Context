@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Button from '@/components/ui/Button';
@@ -15,8 +16,9 @@ export default function SettingsPage() {
 }
 
 function SettingsContent() {
-  const { user, signOut } = useAuth();
+  const { user, signOut, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleManageSubscription = async () => {
     if (!user) return;
@@ -40,8 +42,18 @@ function SettingsContent() {
     }
   };
 
-  if (!user) {
-    return <Loading />;
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.push('/login');
+    }
+  }, [user, authLoading, router]);
+
+  if (authLoading || !user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loading />
+      </div>
+    );
   }
 
   return (

@@ -18,55 +18,84 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let isMounted = true;
+    
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      if (!isMounted) return;
+      
       setFirebaseUser(firebaseUser);
       
       if (firebaseUser) {
-        // Fetch user document from Firestore
-        const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
+        try {
+          // Fetch user document from Firestore
+          const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
+          if (!isMounted) return;
+          
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            setUser({
+              id: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              createdAt: userData.createdAt?.toDate() || new Date(),
+              subscriptionTier: userData.subscriptionTier || 'free',
+              subscriptionEndsAt: userData.subscriptionEndsAt?.toDate() || new Date(),
+              stripeCustomerId: userData.stripeCustomerId,
+              role: userData.role,
+              preferences: userData.preferences || {
+                emailNotifications: true,
+                readingFontSize: 'medium',
+              },
+            });
+          } else {
+            // Create user document if it doesn't exist
+            const newUser: User = {
+              id: firebaseUser.uid,
+              email: firebaseUser.email || '',
+              createdAt: new Date(),
+              subscriptionTier: 'trial',
+              subscriptionEndsAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days
+              preferences: {
+                emailNotifications: true,
+                readingFontSize: 'medium',
+              },
+            };
+            await setDoc(doc(db, 'users', firebaseUser.uid), {
+              ...newUser,
+              createdAt: new Date(),
+              subscriptionEndsAt: new Date(newUser.subscriptionEndsAt),
+            });
+            if (!isMounted) return;
+            setUser(newUser);
+          }
+        } catch (error) {
+          console.error('Error fetching user data:', error);
+          if (!isMounted) return;
+          // Still set basic user info even if Firestore fails
           setUser({
             id: firebaseUser.uid,
             email: firebaseUser.email || '',
-            createdAt: userData.createdAt?.toDate() || new Date(),
-            subscriptionTier: userData.subscriptionTier || 'free',
-            subscriptionEndsAt: userData.subscriptionEndsAt?.toDate() || new Date(),
-            stripeCustomerId: userData.stripeCustomerId,
-            role: userData.role,
-            preferences: userData.preferences || {
-              emailNotifications: true,
-              readingFontSize: 'medium',
-            },
-          });
-        } else {
-          // Create user document if it doesn't exist
-          const newUser: User = {
-            id: firebaseUser.uid,
-            email: firebaseUser.email || '',
             createdAt: new Date(),
-            subscriptionTier: 'trial',
-            subscriptionEndsAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000), // 14 days
+            subscriptionTier: 'free',
+            subscriptionEndsAt: new Date(),
             preferences: {
               emailNotifications: true,
               readingFontSize: 'medium',
             },
-          };
-          await setDoc(doc(db, 'users', firebaseUser.uid), {
-            ...newUser,
-            createdAt: new Date(),
-            subscriptionEndsAt: new Date(newUser.subscriptionEndsAt),
           });
-          setUser(newUser);
         }
       } else {
         setUser(null);
       }
       
-      setLoading(false);
+      if (isMounted) {
+        setLoading(false);
+      }
     });
 
-    return () => unsubscribe();
+    return () => {
+      isMounted = false;
+      unsubscribe();
+    };
   }, []);
 
   const signIn = async (email: string, password: string) => {

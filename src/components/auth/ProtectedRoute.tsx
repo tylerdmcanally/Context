@@ -15,25 +15,43 @@ export default function ProtectedRoute({ children, requireEditor }: ProtectedRou
   const router = useRouter();
 
   useEffect(() => {
+    // Only redirect if we're sure about the auth state
     if (!loading) {
       if (!user) {
         router.push('/login');
-      } else if (requireEditor && user.role !== 'editor') {
+        return;
+      }
+      if (requireEditor && user.role !== 'editor') {
         router.push('/');
+        return;
       }
     }
   }, [user, loading, requireEditor, router]);
 
+  // Show loading state while checking auth
   if (loading) {
-    return <Loading />;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loading />
+      </div>
+    );
   }
 
+  // Don't render anything if redirecting
   if (!user) {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loading />
+      </div>
+    );
   }
 
   if (requireEditor && user.role !== 'editor') {
-    return null;
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loading />
+      </div>
+    );
   }
 
   return <>{children}</>;

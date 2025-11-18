@@ -11,7 +11,7 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, user } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -21,10 +21,13 @@ export default function LoginForm() {
 
     try {
       await signIn(email, password);
-      router.push('/');
+      // Wait a moment for auth state to update, then redirect
+      setTimeout(() => {
+        router.push('/');
+        router.refresh(); // Refresh to ensure server components get updated auth state
+      }, 100);
     } catch (err: any) {
       setError(err.message || 'Failed to sign in');
-    } finally {
       setLoading(false);
     }
   };
