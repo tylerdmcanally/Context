@@ -40,20 +40,20 @@ export default function StoryReader({ story }: StoryReaderProps) {
       <ProgressTracker progress={scrollProgress} />
 
       <header className="mb-12">
-        <time className="text-sm text-black/50 mb-4 block font-medium">
+        <time className="text-sm text-white/50 mb-4 block font-medium">
           {formatStoryDateFull(story.publishedDate)}
         </time>
 
-        <h1 className="text-5xl font-serif font-semibold mt-2 mb-6 leading-tight text-black tracking-tight">
+        <h1 className="text-5xl font-serif font-semibold mt-2 mb-6 leading-tight text-white tracking-tight">
           {story.headline}
         </h1>
 
         {story.subheadline && (
-          <p className="text-xl text-black/70 mb-8 leading-relaxed font-serif">{story.subheadline}</p>
+          <p className="text-xl text-white/70 mb-8 leading-relaxed font-serif">{story.subheadline}</p>
         )}
 
-        <div className="flex items-center justify-between pt-4 border-t border-black/10">
-          <span className="text-sm text-black/60 font-medium">
+        <div className="flex items-center justify-between pt-4 border-t border-white/10">
+          <span className="text-sm text-white/60 font-medium">
             {story.readTimeMinutes} min read
           </span>
 

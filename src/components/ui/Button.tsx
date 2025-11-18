@@ -14,12 +14,12 @@ export default function Button({
   children,
   ...props
 }: ButtonProps) {
-  const baseStyles = 'font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-black/20';
+  const baseStyles = 'font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-white/20';
   
   const variants = {
-    primary: 'bg-black text-white hover:bg-black/90 focus:ring-black/30',
-    secondary: 'bg-black/5 text-black hover:bg-black/10 focus:ring-black/20',
-    outline: 'border border-black/20 text-black hover:bg-black/5 focus:ring-black/20',
+    primary: 'bg-white text-black hover:bg-white/90 focus:ring-white/30',
+    secondary: 'bg-white/10 text-white hover:bg-white/20 focus:ring-white/20',
+    outline: 'border border-white/20 text-white hover:bg-white/10 focus:ring-white/20',
   };
   
   const sizes = {

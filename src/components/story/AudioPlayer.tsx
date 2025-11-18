@@ -38,7 +38,7 @@ export default function AudioPlayer({ audioUrl, storyId }: AudioPlayerProps) {
   };
 
   return (
-    <div className="bg-black/5 border border-black/10 p-6 mb-12">
+    <div className="bg-white/5 border border-white/10 p-6 mb-12">
       <audio
         ref={audioRef}
         src={audioUrl}
@@ -48,7 +48,7 @@ export default function AudioPlayer({ audioUrl, storyId }: AudioPlayerProps) {
       <div className="flex items-center gap-4">
         <button
           onClick={togglePlayPause}
-          className="w-12 h-12 flex items-center justify-center bg-black text-white hover:bg-black/90 transition-colors"
+          className="w-12 h-12 flex items-center justify-center bg-white text-black hover:bg-white/90 transition-colors"
           aria-label={isPlaying ? 'Pause' : 'Play'}
         >
           {isPlaying ? '⏸' : '▶️'}
@@ -56,7 +56,7 @@ export default function AudioPlayer({ audioUrl, storyId }: AudioPlayerProps) {
         
         <button
           onClick={() => skip(-15)}
-          className="text-black/60 hover:text-black text-sm font-medium transition-colors"
+          className="text-white/60 hover:text-white text-sm font-medium transition-colors"
           aria-label="Skip back 15 seconds"
         >
           ⏪ 15s
@@ -69,9 +69,9 @@ export default function AudioPlayer({ audioUrl, storyId }: AudioPlayerProps) {
             max={duration || 0}
             value={currentTime}
             onChange={(e) => seek(Number(e.target.value))}
-            className="w-full h-1 bg-black/10 appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-black"
+            className="w-full h-1 bg-white/10 appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:w-3 [&::-webkit-slider-thumb]:h-3 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-white"
           />
-          <div className="flex justify-between text-xs text-black/50 mt-2 font-medium">
+          <div className="flex justify-between text-xs text-white/50 mt-2 font-medium">
             <span>{formatTime(currentTime)}</span>
             <span>{formatTime(duration)}</span>
           </div>
@@ -79,7 +79,7 @@ export default function AudioPlayer({ audioUrl, storyId }: AudioPlayerProps) {
         
         <button
           onClick={() => skip(15)}
-          className="text-black/60 hover:text-black text-sm font-medium transition-colors"
+          className="text-white/60 hover:text-white text-sm font-medium transition-colors"
           aria-label="Skip forward 15 seconds"
         >
           15s ⏩
@@ -87,7 +87,7 @@ export default function AudioPlayer({ audioUrl, storyId }: AudioPlayerProps) {
         
         <button
           onClick={changeSpeed}
-          className="text-sm text-black/60 hover:text-black min-w-[3rem] font-medium transition-colors"
+          className="text-sm text-white/60 hover:text-white min-w-[3rem] font-medium transition-colors"
           aria-label="Change playback speed"
         >
           {playbackRate}x

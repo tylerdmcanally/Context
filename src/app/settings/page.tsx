@@ -46,14 +46,14 @@ function SettingsContent() {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">Settings</h1>
+      <h1 className="text-3xl font-serif font-semibold mb-8 text-white">Settings</h1>
       
       <div className="space-y-6">
-        <div className="border border-gray-200 rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">Account</h2>
-          <div className="space-y-2">
-            <p><strong>Email:</strong> {user.email}</p>
-            <p><strong>Subscription:</strong> {user.subscriptionTier}</p>
+        <div className="border border-white/10 rounded-lg p-6 bg-white/5">
+          <h2 className="text-xl font-serif font-semibold mb-4 text-white">Account</h2>
+          <div className="space-y-2 text-white/80">
+            <p><strong className="text-white">Email:</strong> {user.email}</p>
+            <p><strong className="text-white">Subscription:</strong> {user.subscriptionTier}</p>
             {user.subscriptionTier === 'premium' && (
               <Button
                 variant="outline"
@@ -66,12 +66,12 @@ function SettingsContent() {
           </div>
         </div>
         
-        <div className="border border-gray-200 rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">Preferences</h2>
-          <p className="text-gray-600">Preferences coming soon...</p>
+        <div className="border border-white/10 rounded-lg p-6 bg-white/5">
+          <h2 className="text-xl font-serif font-semibold mb-4 text-white">Preferences</h2>
+          <p className="text-white/60">Preferences coming soon...</p>
         </div>
         
-        <div className="border border-gray-200 rounded-lg p-6">
+        <div className="border border-white/10 rounded-lg p-6 bg-white/5">
           <Button variant="outline" onClick={signOut}>
             Sign Out
           </Button>

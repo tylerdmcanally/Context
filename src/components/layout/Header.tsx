@@ -8,37 +8,37 @@ export default function Header() {
   const { user, loading, signOut } = useAuth();
 
   return (
-    <header className="border-b border-black/10 bg-white sticky top-0 z-50 backdrop-blur-sm bg-white/95">
+    <header className="border-b border-white/10 bg-black sticky top-0 z-50 backdrop-blur-sm bg-black/95">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex items-center justify-between h-20">
-          <Link href="/" className="text-2xl font-serif font-semibold text-black tracking-tight hover:opacity-70 transition-opacity">
+          <Link href="/" className="text-2xl font-serif font-semibold text-white tracking-tight hover:opacity-70 transition-opacity">
             Context
           </Link>
           
           <nav className="flex items-center gap-8">
-            <Link href="/archive" className="text-sm font-medium text-black/70 hover:text-black transition-colors">
+            <Link href="/archive" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
               Archive
             </Link>
             
             {!loading && user && (
               <>
-                <Link href="/library" className="text-sm font-medium text-black/70 hover:text-black transition-colors">
+                <Link href="/library" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
                   Library
                 </Link>
                 
                 {user.role === 'editor' && (
-                  <Link href="/editor" className="text-sm font-medium text-black/70 hover:text-black transition-colors">
+                  <Link href="/editor" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
                     Editor
                   </Link>
                 )}
                 
                 <div className="flex items-center gap-4">
-                  <Link href="/settings" className="text-sm font-medium text-black/70 hover:text-black transition-colors">
+                  <Link href="/settings" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
                     {user.email?.split('@')[0] || 'Profile'}
                   </Link>
                   <button 
                     onClick={signOut}
-                    className="text-sm font-medium text-black/70 hover:text-black transition-colors"
+                    className="text-sm font-medium text-white/70 hover:text-white transition-colors"
                   >
                     Sign Out
                   </button>
@@ -48,7 +48,7 @@ export default function Header() {
             
             {!loading && !user && (
               <>
-                <Link href="/login" className="text-sm font-medium text-black/70 hover:text-black transition-colors">
+                <Link href="/login" className="text-sm font-medium text-white/70 hover:text-white transition-colors">
                   Log In
                 </Link>
                 <Link href="/signup">

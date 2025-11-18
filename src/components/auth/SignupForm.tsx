@@ -64,7 +64,7 @@ export default function SignupForm() {
         onChange={(e) => setConfirmPassword(e.target.value)}
         required
       />
-      {error && <p className="text-red-600 text-sm">{error}</p>}
+      {error && <p className="text-red-400 text-sm">{error}</p>}
       <Button type="submit" disabled={loading} className="w-full">
         {loading ? 'Creating account...' : 'Sign Up'}
       </Button>
