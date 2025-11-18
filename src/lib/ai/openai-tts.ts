@@ -9,8 +9,6 @@ export async function generateAudio(
   text: string,
   storyId: string
 ): Promise<string> {
-  console.log(`Generating audio for story ${storyId}...`);
-  
   try {
     // Generate audio with OpenAI
     const mp3 = await openai.audio.speech.create({
@@ -38,8 +36,6 @@ export async function generateAudio(
     
     // Get public URL
     const audioUrl = `https://storage.googleapis.com/${bucket.name}/audio/${storyId}.mp3`;
-    
-    console.log(`Audio generated: ${audioUrl}`);
     return audioUrl;
   } catch (error) {
     console.error('Failed to generate audio:', error);

@@ -13,7 +13,6 @@ export async function aggregateNews(): Promise<Article[]> {
   
   for (const source of RSS_SOURCES) {
     try {
-      console.log(`Fetching from ${source.name}...`);
       const feed = await parser.parseURL(source.url);
       
       const articles = feed.items.map(item => ({
@@ -29,7 +28,6 @@ export async function aggregateNews(): Promise<Article[]> {
       }));
       
       allArticles.push(...articles);
-      console.log(`✓ Fetched ${articles.length} articles from ${source.name}`);
       
     } catch (error) {
       console.error(`✗ Failed to fetch ${source.name}:`, error);
@@ -37,7 +35,6 @@ export async function aggregateNews(): Promise<Article[]> {
     }
   }
   
-  console.log(`Total articles aggregated: ${allArticles.length}`);
   return allArticles;
 }
 

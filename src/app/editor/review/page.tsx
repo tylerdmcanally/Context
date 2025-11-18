@@ -44,9 +44,7 @@ function ReviewContent() {
   };
 
   const handleSave = async (headline: string, content: string) => {
-    // Save story edits
-    // Implementation would update Firestore
-    console.log('Saving story:', { headline, content });
+    // TODO: Persist story edits to Firestore
   };
 
   const handlePublish = async () => {

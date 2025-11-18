@@ -3,8 +3,6 @@ import { aggregateNews, deduplicateArticles } from '@/lib/news/rss-aggregator';
 
 export async function GET() {
   try {
-    console.log('Testing RSS aggregation...');
-    
     const articles = await aggregateNews();
     const unique = deduplicateArticles(articles);
     

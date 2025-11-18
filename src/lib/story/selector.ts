@@ -5,22 +5,17 @@ import { scoreStories } from './scoring';
 import { generateCandidateSummary } from '@/lib/ai/claude';
 
 export async function generateCandidates(): Promise<StoryCandidate[]> {
-  console.log('Starting candidate generation...');
-  
   // 1. Aggregate news from RSS feeds
   const rawArticles = await aggregateNews();
   
   // 2. Deduplicate
   const uniqueArticles = deduplicateArticles(rawArticles);
-  console.log(`Deduplicated to ${uniqueArticles.length} unique articles`);
   
   // 3. Filter to recent articles (last 24 hours)
   const recentArticles = filterRecentArticles(uniqueArticles, 24);
-  console.log(`Filtered to ${recentArticles.length} recent articles`);
   
   // 4. Cluster similar stories
   const clusters = clusterArticles(recentArticles);
-  console.log(`Created ${clusters.length} story clusters`);
   
   // 5. Score clusters
   const scoredClusters = scoreStories(clusters);
@@ -134,8 +129,6 @@ export async function generateCandidates(): Promise<StoryCandidate[]> {
       })),
     });
   }
-  
-  console.log(`Generated ${candidates.length} candidates`);
   return candidates;
 }
 

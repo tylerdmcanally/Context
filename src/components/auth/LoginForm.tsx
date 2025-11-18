@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import Input from '../ui/Input';
@@ -11,8 +11,16 @@ export default function LoginForm() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn, user } = useAuth();
+  const { signIn, user, loading: authLoading } = useAuth();
   const router = useRouter();
+
+  // Redirect when user is successfully logged in
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.push('/');
+      router.refresh();
+    }
+  }, [user, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -21,12 +29,10 @@ export default function LoginForm() {
 
     try {
       await signIn(email, password);
-      // Wait a moment for auth state to update, then redirect
-      setTimeout(() => {
-        router.push('/');
-        router.refresh(); // Refresh to ensure server components get updated auth state
-      }, 100);
+      // Don't redirect here - let the useEffect handle it when user state updates
+      // The signIn will trigger onAuthStateChanged which will update the user state
     } catch (err: any) {
+      console.error('Login error:', err);
       setError(err.message || 'Failed to sign in');
       setLoading(false);
     }
@@ -49,8 +55,8 @@ export default function LoginForm() {
         required
       />
       {error && <p className="text-red-400 text-sm">{error}</p>}
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading ? 'Signing in...' : 'Sign In'}
+      <Button type="submit" disabled={loading || authLoading} className="w-full">
+        {loading || authLoading ? 'Signing in...' : 'Sign In'}
       </Button>
     </form>
   );

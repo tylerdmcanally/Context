@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import Input from '../ui/Input';
@@ -12,8 +12,16 @@ export default function SignupForm() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signUp } = useAuth();
+  const { signUp, user, loading: authLoading } = useAuth();
   const router = useRouter();
+
+  // Redirect when user is successfully signed up
+  useEffect(() => {
+    if (!authLoading && user) {
+      router.push('/');
+      router.refresh();
+    }
+  }, [user, authLoading, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,12 +41,10 @@ export default function SignupForm() {
 
     try {
       await signUp(email, password);
-      // Wait a moment for auth state to update, then redirect
-      setTimeout(() => {
-        router.push('/');
-        router.refresh(); // Refresh to ensure server components get updated auth state
-      }, 100);
+      // Don't redirect here - let the useEffect handle it when user state updates
+      // The signUp will trigger onAuthStateChanged which will update the user state
     } catch (err: any) {
+      console.error('Signup error:', err);
       setError(err.message || 'Failed to sign up');
       setLoading(false);
     }
@@ -68,8 +74,8 @@ export default function SignupForm() {
         required
       />
       {error && <p className="text-red-400 text-sm">{error}</p>}
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading ? 'Creating account...' : 'Sign Up'}
+      <Button type="submit" disabled={loading || authLoading} className="w-full">
+        {loading || authLoading ? 'Creating account...' : 'Sign Up'}
       </Button>
     </form>
   );
