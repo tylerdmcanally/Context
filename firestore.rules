@@ -1,0 +1,42 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read/write their own user document
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Stories are readable by all authenticated users
+    // Write access only for editors
+    match /stories/{storyId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'editor';
+    }
+    
+    // Story candidates - readable by editors, writable by system
+    match /storyCandidates/{date} {
+      allow read: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'editor';
+      allow write: if false; // Only via Cloud Functions
+    }
+    
+    // Bookmarks - users can manage their own
+    match /bookmarks/{userId}/bookmarkedStories/{storyId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Reading progress - users can manage their own
+    match /readingProgress/{userId}/progress/{storyId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Raw articles - readable by editors, writable by system
+    match /rawArticles/{articleId} {
+      allow read: if request.auth != null && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'editor';
+      allow write: if false; // Only via Cloud Functions
+    }
+  }
+}
+
