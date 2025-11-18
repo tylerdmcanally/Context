@@ -1,7 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import Button from '@/components/ui/Button';
@@ -19,7 +18,6 @@ function SettingsContent() {
   const { user, signOut, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
   const [portalError, setPortalError] = useState<string | null>(null);
-  const router = useRouter();
 
   const handleManageSubscription = async () => {
     if (!user) return;
@@ -50,12 +48,6 @@ function SettingsContent() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    if (!authLoading && !user) {
-      router.push('/login');
-    }
-  }, [user, authLoading, router]);
 
   if (authLoading || !user) {
     return (
