@@ -68,19 +68,31 @@ export default function PricingPage() {
             <li>✓ Full archive</li>
             <li>✓ Weekend deep dives</li>
           </ul>
-          <Button
-            variant="primary"
-            className="w-full"
-            onClick={handleUpgrade}
-            disabled={loading}
-          >
-            {loading ? 'Loading...' : user?.subscriptionTier === 'premium' ? 'Current Plan' : 'Upgrade to Premium'}
-          </Button>
+          {user?.subscriptionTier === 'premium' ? (
+            <div className="bg-white/5 rounded p-3 text-center">
+              <p className="text-sm text-white">✓ Current Plan</p>
+            </div>
+          ) : (
+            <Button
+              variant="primary"
+              className="w-full"
+              onClick={handleUpgrade}
+              disabled={loading}
+            >
+              {loading ? 'Loading...' : 'Upgrade to Premium'}
+            </Button>
+          )}
         </div>
       </div>
       
-      <div className="mt-12 text-center text-white/60">
-        <p>14-day free trial included with signup</p>
+      <div className="mt-12 text-center">
+        <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-4">
+          <p className="text-sm text-white/80 font-medium mb-2">🧪 Test Mode Active</p>
+          <p className="text-xs text-white/60">
+            Use test card <code className="bg-black/20 px-1 rounded">4242 4242 4242 4242</code> with any future expiry date and CVC to test without charges
+          </p>
+        </div>
+        <p className="text-white/60">14-day free trial included with signup</p>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc, deleteDoc } from 'firebase/firestore';
@@ -14,15 +14,7 @@ export default function BookmarkButton({ storyId }: BookmarkButtonProps) {
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-    checkBookmark();
-  }, [user, storyId]);
-
-  const checkBookmark = async () => {
+  const checkBookmark = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -35,7 +27,15 @@ export default function BookmarkButton({ storyId }: BookmarkButtonProps) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, storyId]);
+
+  useEffect(() => {
+    if (!user) {
+      setLoading(false);
+      return;
+    }
+    checkBookmark();
+  }, [user, checkBookmark]);
 
   const toggleBookmark = async () => {
     if (!user) return;
@@ -74,4 +74,3 @@ export default function BookmarkButton({ storyId }: BookmarkButtonProps) {
     </button>
   );
 }
-

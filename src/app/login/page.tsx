@@ -7,7 +7,7 @@ export default function LoginPage() {
       <h1 className="text-3xl font-serif font-semibold mb-8 text-center text-white">Log In</h1>
       <LoginForm />
       <p className="mt-4 text-center text-sm text-white/60">
-        Don't have an account?{' '}
+        Don&apos;t have an account?{' '}
         <Link href="/signup" className="text-white hover:text-white/80 underline">
           Sign up
         </Link>
@@ -15,4 +15,3 @@ export default function LoginPage() {
     </div>
   );
 }
-

@@ -66,13 +66,19 @@ function SettingsContent() {
           <div className="space-y-2 text-white/80">
             <p><strong className="text-white">Email:</strong> {user.email}</p>
             <p><strong className="text-white">Subscription:</strong> {user.subscriptionTier}</p>
-            {user.subscriptionTier === 'premium' && (
+            {user.subscriptionTier === 'trial' && (
+              <p className="text-sm text-white/60 mt-2">
+                Trial expires: {user.subscriptionEndsAt ? new Date(user.subscriptionEndsAt).toLocaleDateString() : 'N/A'}
+              </p>
+            )}
+            {user.subscriptionTier === 'premium' && user.stripeCustomerId && (
               <Button
                 variant="outline"
                 onClick={handleManageSubscription}
                 disabled={loading}
+                className="mt-4"
               >
-                Manage Subscription
+                {loading ? 'Loading...' : 'Manage Subscription'}
               </Button>
             )}
           </div>

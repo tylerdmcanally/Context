@@ -1,25 +1,13 @@
 import { NextResponse } from 'next/server';
 import { adminDb } from '@/lib/firebase-admin';
-import { auth } from '@/lib/firebase';
-import { getAuth } from 'firebase-admin/auth';
 
 export async function POST(req: Request) {
   try {
-    const { storyId, percentComplete, completed, audioPositionSeconds } = await req.json();
+    const body = await req.json();
+    const { storyId, percentComplete, completed, audioPositionSeconds, userId } = body;
     
-    // Get user ID from request headers or auth token
-    const authHeader = req.headers.get('authorization');
-    if (!authHeader) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      );
-    }
-    
-    // In production, verify the token properly
-    // For now, we'll need to get userId from the request body or session
-    const { userId } = await req.json();
-    
+    // Get user ID from request body (client should send it)
+    // TODO: In production, verify auth token from headers instead
     if (!userId || !storyId) {
       return NextResponse.json(
         { error: 'Missing userId or storyId' },

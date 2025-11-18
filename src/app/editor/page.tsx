@@ -75,8 +75,8 @@ function EditorContent() {
   return (
     <div className="max-w-6xl mx-auto px-4 py-12">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold">Today's Story Candidates</h1>
-        <p className="text-gray-600 mt-2">
+        <h1 className="text-3xl font-serif font-semibold text-white">Today&apos;s Story Candidates</h1>
+        <p className="text-white/60 mt-2">
           {new Date().toLocaleDateString('en-US', {
             weekday: 'long',
             month: 'long',
@@ -86,14 +86,14 @@ function EditorContent() {
       </header>
 
       {selectedCandidate ? (
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
-          <p className="text-blue-900">
+        <div className="bg-white/10 border border-white/20 rounded-lg p-4 mb-8">
+          <p className="text-white">
             ✓ Candidate {selectedCandidate} selected. Story is being generated.
           </p>
         </div>
       ) : (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-8">
-          <p className="text-yellow-900">
+        <div className="bg-white/5 border border-white/10 rounded-lg p-4 mb-8">
+          <p className="text-white/80">
             ⚠️ No story selected yet. Auto-select happens at 8:50 AM if no manual selection.
           </p>
         </div>
@@ -112,4 +112,3 @@ function EditorContent() {
     </div>
   );
 }
-

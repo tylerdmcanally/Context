@@ -32,8 +32,8 @@ export default function PublishControls({ storyId, onPublish, onGenerateAudio }:
   };
 
   return (
-    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-      <h3 className="font-semibold mb-4">Publish Controls</h3>
+    <div className="bg-white/5 border border-white/10 rounded-lg p-4">
+      <h3 className="font-serif font-semibold mb-4 text-white">Publish Controls</h3>
       <div className="flex gap-4">
         <Button
           onClick={handleGenerateAudio}

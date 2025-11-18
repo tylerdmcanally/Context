@@ -11,11 +11,11 @@ interface CandidateCardProps {
 
 export default function CandidateCard({ candidate, onSelect, disabled }: CandidateCardProps) {
   return (
-    <div className="border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow">
+    <div className="border border-white/10 rounded-lg p-6 bg-white/5 hover:bg-white/10 transition-colors">
       <div className="flex items-start justify-between mb-4">
         <div>
-          <h3 className="text-xl font-bold mb-2">{candidate.headline}</h3>
-          <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+          <h3 className="text-xl font-serif font-semibold mb-2 text-white">{candidate.headline}</h3>
+          <div className="flex items-center gap-4 text-sm text-white/60 mb-4">
             <span>Score: {candidate.coverageScore.toFixed(1)}</span>
             <span>
               Sources: {candidate.sourceCountLeft + candidate.sourceCountCenter + candidate.sourceCountRight}
@@ -25,19 +25,19 @@ export default function CandidateCard({ candidate, onSelect, disabled }: Candida
             </span>
           </div>
         </div>
-        <div className="text-2xl font-bold text-gray-300">
+        <div className="text-2xl font-semibold text-white/40">
           #{candidate.candidateNum}
         </div>
       </div>
 
-      <p className="text-gray-700 mb-4 whitespace-pre-wrap">{candidate.summary}</p>
+      <p className="text-white/80 mb-4 whitespace-pre-wrap">{candidate.summary}</p>
 
-      <div className="bg-gray-50 rounded p-3 mb-4">
-        <p className="text-sm text-gray-600 italic">{candidate.rationale}</p>
+      <div className="bg-white/5 rounded p-3 mb-4 border border-white/10">
+        <p className="text-sm text-white/60 italic">{candidate.rationale}</p>
       </div>
 
       <div className="flex items-center justify-between">
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-white/50">
           {candidate.articles.length} articles
         </div>
         <Button

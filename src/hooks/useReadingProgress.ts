@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from './useAuth';
 import { db } from '@/lib/firebase';
 import { doc, getDoc, setDoc } from 'firebase/firestore';
@@ -11,16 +11,7 @@ export function useReadingProgress(storyId: string) {
   const [progress, setProgress] = useState<ReadingProgress | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user || !storyId) {
-      setLoading(false);
-      return;
-    }
-
-    loadProgress();
-  }, [user, storyId]);
-
-  const loadProgress = async () => {
+  const loadProgress = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -44,7 +35,16 @@ export function useReadingProgress(storyId: string) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user, storyId]);
+
+  useEffect(() => {
+    if (!user || !storyId) {
+      setLoading(false);
+      return;
+    }
+
+    loadProgress();
+  }, [user, storyId, loadProgress]);
 
   const updateProgress = async (
     percentComplete: number,
@@ -94,4 +94,3 @@ export function useReadingProgress(storyId: string) {
     updateProgress,
   };
 }
-

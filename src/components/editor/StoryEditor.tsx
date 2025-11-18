@@ -34,13 +34,13 @@ export default function StoryEditor({ storyId, headline: initialHeadline, conten
       />
       
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-white/80 mb-2">
           Content
         </label>
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="w-full h-96 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full h-96 px-4 py-2 border border-white/20 rounded-lg bg-black text-white placeholder:text-white/40 focus:outline-none focus:ring-2 focus:ring-white/50 focus:border-white/40"
         />
       </div>
 

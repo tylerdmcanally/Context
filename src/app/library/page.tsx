@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { db } from '@/lib/firebase';
 import { collection, query, where, getDocs } from 'firebase/firestore';
@@ -24,12 +24,7 @@ function LibraryContent() {
   const [bookmarks, setBookmarks] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (!user) return;
-    loadBookmarks();
-  }, [user]);
-
-  const loadBookmarks = async () => {
+  const loadBookmarks = useCallback(async () => {
     if (!user) return;
 
     try {
@@ -66,7 +61,12 @@ function LibraryContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [user]);
+
+  useEffect(() => {
+    if (!user) return;
+    loadBookmarks();
+  }, [user, loadBookmarks]);
 
   if (loading) {
     return <Loading />;
@@ -74,23 +74,23 @@ function LibraryContent() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">My Library</h1>
+      <h1 className="text-3xl font-serif font-semibold mb-8 text-white">My Library</h1>
       
       {bookmarks.length === 0 ? (
-        <p className="text-gray-600">You haven't bookmarked any stories yet.</p>
+        <p className="text-white/60">You haven&apos;t bookmarked any stories yet.</p>
       ) : (
         <div className="space-y-6">
           {bookmarks.map((bookmark) => (
             <Link
               key={bookmark.storyId}
               href={`/story/${bookmark.storyId}`}
-              className="block border border-gray-200 rounded-lg p-6 hover:shadow-lg transition-shadow"
+              className="block border border-white/10 rounded-lg p-6 hover:bg-white/5 transition-colors"
             >
-              <time className="text-sm text-gray-500">
+              <time className="text-sm text-white/50">
                 {formatStoryDate(bookmark.story.publishedDate)}
               </time>
-              <h2 className="text-2xl font-bold mt-2 mb-2">{bookmark.story.headline}</h2>
-              <div className="flex items-center gap-4 text-sm text-gray-500">
+              <h2 className="text-2xl font-serif font-semibold mt-2 mb-2 text-white">{bookmark.story.headline}</h2>
+              <div className="flex items-center gap-4 text-sm text-white/50">
                 <span>{bookmark.story.readTimeMinutes} min read</span>
                 <span>Bookmarked {formatStoryDate(bookmark.bookmarkedAt)}</span>
               </div>
@@ -101,4 +101,3 @@ function LibraryContent() {
     </div>
   );
 }
-

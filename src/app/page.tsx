@@ -49,7 +49,7 @@ export default async function Home() {
       <div className="max-w-3xl mx-auto px-6 py-24 text-center">
         <h1 className="text-5xl font-serif font-semibold mb-6 text-white tracking-tight">Welcome to Context</h1>
         <p className="text-lg text-white/70 mb-12 leading-relaxed max-w-xl mx-auto">
-          Today's story is being prepared. Check back soon!
+          Today&apos;s story is being prepared. Check back soon!
         </p>
         <Link href="/archive">
           <button className="px-6 py-3 bg-white text-black font-medium hover:bg-white/90 transition-colors">

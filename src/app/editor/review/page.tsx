@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import ProtectedRoute from '@/components/auth/ProtectedRoute';
 import StoryEditor from '@/components/editor/StoryEditor';
@@ -24,11 +24,7 @@ function ReviewContent() {
   const [loading, setLoading] = useState(true);
   const storyId = getTodayDateString();
 
-  useEffect(() => {
-    loadStory();
-  }, []);
-
-  const loadStory = async () => {
+  const loadStory = useCallback(async () => {
     try {
       // Fetch story from Firestore or API
       const response = await fetch(`/api/stories/${storyId}`);
@@ -41,7 +37,11 @@ function ReviewContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [storyId]);
+
+  useEffect(() => {
+    loadStory();
+  }, [loadStory]);
 
   const handleSave = async (headline: string, content: string) => {
     // TODO: Persist story edits to Firestore
@@ -92,14 +92,14 @@ function ReviewContent() {
   if (!story) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-12">
-        <p>Story not found. Please select a candidate first.</p>
+        <p className="text-white/60">Story not found. Please select a candidate first.</p>
       </div>
     );
   }
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-12">
-      <h1 className="text-3xl font-bold mb-8">Review Story</h1>
+      <h1 className="text-3xl font-serif font-semibold mb-8 text-white">Review Story</h1>
       
       <StoryEditor
         storyId={storyId}
@@ -118,4 +118,3 @@ function ReviewContent() {
     </div>
   );
 }
-
