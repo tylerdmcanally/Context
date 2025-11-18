@@ -8,6 +8,7 @@ import Link from 'next/link';
 export default function PricingPage() {
   const { user } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleUpgrade = async () => {
     if (!user) {
@@ -16,6 +17,7 @@ export default function PricingPage() {
     }
 
     setLoading(true);
+    setError(null);
     try {
       const response = await fetch('/api/stripe/create-checkout', {
         method: 'POST',
@@ -26,12 +28,19 @@ export default function PricingPage() {
         }),
       });
 
+      if (!response.ok) {
+        throw new Error('Unable to start checkout');
+      }
+
       const data = await response.json();
       if (data.url) {
         window.location.href = data.url;
+      } else {
+        setError('Checkout link unavailable. Please try again.');
       }
     } catch (error) {
       console.error('Failed to create checkout:', error);
+      setError('Could not start checkout. Please try again in a moment.');
     } finally {
       setLoading(false);
     }
@@ -81,6 +90,9 @@ export default function PricingPage() {
             >
               {loading ? 'Loading...' : 'Upgrade to Premium'}
             </Button>
+          )}
+          {error && (
+            <p className="text-sm text-red-300 mt-3 text-center">{error}</p>
           )}
         </div>
       </div>

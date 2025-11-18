@@ -1,4 +1,5 @@
 import Parser from 'rss-parser';
+import { BiasRating } from '../shared/shared-algorithms';
 
 const parser = new Parser({
   customFields: {
@@ -9,7 +10,7 @@ const parser = new Parser({
 export interface RSSSource {
   name: string;
   url: string;
-  bias: 'left' | 'lean-left' | 'center' | 'lean-right' | 'right';
+  bias: BiasRating;
   tier: number;
 }
 
@@ -20,7 +21,7 @@ export interface Article {
   pubDate: Date;
   description: string;
   source: string;
-  sourceBias: string;
+  sourceBias: BiasRating;
   sourceTier: number;
   aggregatedAt: Date;
 }

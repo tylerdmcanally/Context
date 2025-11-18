@@ -71,6 +71,22 @@ context-app/
 └── public/               # Static assets
 ```
 
+## Workflow Overview
+
+- **4:00 & 6:00 AM ET** – `functions/src/scheduled/newsAggregation.ts` pulls and deduplicates RSS feeds into `rawArticles`.
+- **6:30 AM ET** – `functions/src/scheduled/generateCandidates.ts` clusters/scored articles (shared logic in `functions/src/shared/shared-algorithms.ts`) and writes three candidates to `storyCandidates/{date}`.
+- **7:00–8:50 AM ET** – Editors review `/editor`, optionally trigger `/api/generate-story` and `/api/publish-story`.
+- **8:50 AM ET** – `functions/src/scheduled/autoSelect.ts` auto-publishes candidate #1 if no manual selection exists.
+- **Frontend** – `src/lib/story/selector.ts` shares the same clustering/scoring helpers for on-demand candidate generation.
+
+Manual overrides live in Next.js API routes under `src/app/api`, while all scheduled automation runs in Firebase Cloud Functions.
+
+## Development & Testing Notes
+
+- `.env.example` lists every required environment variable (client + server).
+- Stripe runs in test mode; see `STRIPE_TEST_MODE.md` for card numbers and webhook instructions.
+- Set `NEXT_PUBLIC_ENABLE_DEV_PREMIUM_ACCESS=true` (and optionally `NEXT_PUBLIC_DEV_PREMIUM_EMAILS`) to unlock premium features locally without running checkout.
+
 ## Development Phases
 
 1. ✅ Project Setup & Configuration

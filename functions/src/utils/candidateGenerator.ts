@@ -1,6 +1,5 @@
 import { aggregateNews, deduplicateArticles, Article } from './rssParser';
-import { clusterArticles } from './clustering';
-import { scoreStories } from './scoring';
+import { clusterArticles, scoreStories } from '../shared/shared-algorithms';
 import Anthropic from '@anthropic-ai/sdk';
 
 const anthropic = new Anthropic({

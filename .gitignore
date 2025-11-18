@@ -48,5 +48,4 @@ functions/.env
 
 # environment variable files with secrets
 vercel-env-vars.txt
-.env.example
 

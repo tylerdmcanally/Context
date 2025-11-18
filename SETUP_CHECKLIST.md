@@ -172,9 +172,8 @@ After setup, verify:
 
 ## Need Help?
 
-- **Stripe Testing:** See `STRIPE_TESTING.md`
+- **Stripe Testing:** See `STRIPE_TEST_MODE.md`
 - **Full Audit:** See `AUDIT_REPORT.md`
-- **Stripe Removal:** See `STRIPE_REMOVAL.md` (if you need to remove it again)
 
 ---
 

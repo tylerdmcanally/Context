@@ -18,12 +18,14 @@ export default function SettingsPage() {
 function SettingsContent() {
   const { user, signOut, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [portalError, setPortalError] = useState<string | null>(null);
   const router = useRouter();
 
   const handleManageSubscription = async () => {
     if (!user) return;
 
     setLoading(true);
+    setPortalError(null);
     try {
       const response = await fetch('/api/stripe/portal', {
         method: 'POST',
@@ -31,12 +33,19 @@ function SettingsContent() {
         body: JSON.stringify({ userId: user.id }),
       });
 
+      if (!response.ok) {
+        throw new Error('Unable to open billing portal');
+      }
+
       const data = await response.json();
       if (data.url) {
         window.location.href = data.url;
+      } else {
+        setPortalError('Billing portal unavailable. Please try again.');
       }
     } catch (error) {
       console.error('Failed to open portal:', error);
+      setPortalError('Could not open Stripe portal. Try again shortly.');
     } finally {
       setLoading(false);
     }
@@ -80,6 +89,9 @@ function SettingsContent() {
               >
                 {loading ? 'Loading...' : 'Manage Subscription'}
               </Button>
+            )}
+            {portalError && (
+              <p className="text-sm text-red-300 mt-3">{portalError}</p>
             )}
           </div>
         </div>

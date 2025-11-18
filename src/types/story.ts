@@ -1,4 +1,6 @@
-export type BiasRating = 'left' | 'lean-left' | 'center' | 'lean-right' | 'right';
+import type { BiasRating as SharedBiasRating } from '@/lib/news/shared-algorithms';
+
+export type BiasRating = SharedBiasRating;
 
 export interface Source {
   name: string;

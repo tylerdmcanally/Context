@@ -1,7 +1,13 @@
 import { StoryCandidate } from '@/types/story';
-import { aggregateNews, deduplicateArticles, filterRecentArticles } from '@/lib/news/rss-aggregator';
-import { clusterArticles } from './clustering';
-import { scoreStories } from './scoring';
+import {
+  aggregateNews,
+  deduplicateArticles,
+  filterRecentArticles,
+} from '@/lib/news/rss-aggregator';
+import {
+  clusterArticles,
+  scoreStories,
+} from '@/lib/news/shared-algorithms';
 import { generateCandidateSummary } from '@/lib/ai/claude';
 
 export async function generateCandidates(): Promise<StoryCandidate[]> {
