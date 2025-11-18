@@ -53,5 +53,6 @@ export interface Article {
   sourceBias: BiasRating;
   sourceTier: number;
   aggregatedAt: Date;
+  [key: string]: unknown;
 }
 
