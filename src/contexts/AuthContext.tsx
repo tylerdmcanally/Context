@@ -48,6 +48,21 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      const optimisticUser: User = {
+        id: fbUser.uid,
+        email: fbUser.email || '',
+        createdAt: new Date(),
+        subscriptionTier: 'free',
+        subscriptionEndsAt: new Date(),
+        preferences: {
+          emailNotifications: true,
+          readingFontSize: 'medium',
+        },
+      };
+
+      setUser((current) => current ?? optimisticUser);
+      setLoading(false);
+
       try {
         const userDoc = await getDoc(doc(db, 'users', fbUser.uid));
         if (!isMounted) return;
@@ -62,22 +77,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             subscriptionEndsAt: data.subscriptionEndsAt?.toDate() || new Date(),
             stripeCustomerId: data.stripeCustomerId,
             role: data.role,
-            preferences: data.preferences || {
-              emailNotifications: true,
-              readingFontSize: 'medium',
-            },
+            preferences: data.preferences || optimisticUser.preferences,
           });
         } else {
           const newUser: User = {
-            id: fbUser.uid,
-            email: fbUser.email || '',
-            createdAt: new Date(),
+            ...optimisticUser,
             subscriptionTier: 'trial',
             subscriptionEndsAt: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
-            preferences: {
-              emailNotifications: true,
-              readingFontSize: 'medium',
-            },
           };
 
           await setDoc(doc(db, 'users', fbUser.uid), {
@@ -91,24 +97,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         }
       } catch (error) {
         console.error('Error fetching user data:', error);
-
         if (!isMounted) return;
-        const fallbackUser: User = {
-          id: fbUser.uid,
-          email: fbUser.email || '',
-          createdAt: new Date(),
-          subscriptionTier: 'free',
-          subscriptionEndsAt: new Date(),
-          preferences: {
-            emailNotifications: true,
-            readingFontSize: 'medium',
-          },
-        };
-        setUser(fallbackUser);
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
+        setUser((current) => current ?? optimisticUser);
       }
     });
 
